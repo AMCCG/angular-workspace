@@ -25,10 +25,16 @@
             "aot": true,
             "assets": [
               "projects/parent-app/src/favicon.ico",
-              "projects/parent-app/src/assets"
+              "projects/parent-app/src/assets",
+              {
+                "glob":"**/*",
+                "input":"libs/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
-              "projects/parent-app/src/styles.scss"
+              "projects/parent-app/src/styles.scss",
+              {"input": "libs/assets/styles/core.scss"}
             ],
             "scripts": []
           },
@@ -149,7 +155,8 @@
               "projects/child-app1/src/assets"
             ],
             "styles": [
-              "projects/child-app1/src/styles.scss"
+              "projects/child-app1/src/styles.scss",
+              {"input": "libs/assets/styles/core.scss"}
             ],
             "scripts": []
           },
@@ -241,6 +248,46 @@
             "production": {
               "devServerTarget": "child-app1:serve:production"
             }
+          }
+        }
+      }
+    },
+    "tools": {
+      "projectType": "library",
+      "root": "projects/tools",
+      "sourceRoot": "projects/tools/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/tools/tsconfig.lib.json",
+            "project": "projects/tools/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/tools/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/tools/src/test.ts",
+            "tsConfig": "projects/tools/tsconfig.spec.json",
+            "karmaConfig": "projects/tools/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/tools/tsconfig.lib.json",
+              "projects/tools/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
